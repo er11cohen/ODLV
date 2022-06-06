@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow.LayoutParams;
 
+import com.eran.utils.Utils;
+
 import java.io.File;
 import java.util.Arrays;
 
@@ -30,6 +32,8 @@ public class GalleryOdlv extends Activity {
     @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        String appName = "/OtzarDinim";
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery_odlv);
 
@@ -40,7 +44,8 @@ public class GalleryOdlv extends Activity {
 
         myGallery = (LinearLayout) findViewById(R.id.mygallery);
 
-        String targetPath = Environment.getExternalStorageDirectory() + "/OtzarDinim/";
+        File path = Utils.getFilePath(getApplicationContext());
+        String targetPath = path + appName + "/";
 
         File targetDirector = new File(targetPath);
         if (!targetDirector.exists()) {
@@ -52,7 +57,7 @@ public class GalleryOdlv extends Activity {
         String preferencesLocationsJson = preferences.getString("preferencesLocationsJson", null);
         if (preferencesLocationsJson == null)//for second install, remove the old files
         {
-            File folder = new File(Environment.getExternalStorageDirectory() + "/OtzarDinim");
+            File folder = new File(path + appName);
             if (folder.isDirectory()) {
                 String[] children = folder.list();
                 for (int i = 0; i < children.length; i++) {
