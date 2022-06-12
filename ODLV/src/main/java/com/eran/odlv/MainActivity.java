@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
     private ArrayList<Halach> alHalachFilter;
 
     String shareStr = "ילקוט יוסף - אוצר דינים לאישה ולבת  - Yalkut Yosef - Otzar Dinim L'Ishah UleBas https://play.google.com/store/apps/details?id=com.eran.odlv";
-    WeakReference<Activity> WeakReferenceActivity;
+    WeakReference<Activity> weakReferenceActivity;
 
     Boolean DrawerLayoutOpen = false;
     SearchView searchView;
@@ -144,7 +144,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        WeakReferenceActivity = new WeakReference<Activity>(this);
+        weakReferenceActivity = new WeakReference<Activity>(this);
 
 
         String version = odlvPreferences.getString("version", "-1");
@@ -200,17 +200,7 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             getMenuInflater().inflate(R.menu.main, menu);
-
-            MenuItem item = menu.findItem(R.id.menu_item_share);
-            ShareActionProvider myShareActionProvider = (ShareActionProvider) item.getActionProvider();
-            Intent myIntent = new Intent();
-            myIntent.setAction(Intent.ACTION_SEND);
-            myIntent.putExtra(Intent.EXTRA_TEXT, shareStr);
-            myIntent.setType("text/plain");
-            myShareActionProvider.setShareIntent(myIntent);
-
 
             searchView = (SearchView) menu.findItem(R.id.menu_item_search).getActionView();
             searchView.setQueryHint("חיפוש במפתח");
@@ -247,7 +237,7 @@ public class MainActivity extends Activity {
                 }
 
             });
-        }
+
         return true;
     }
 
@@ -295,6 +285,9 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.menu_item_score:
                 scoreInGooglePlay();
+                break;
+            case R.id.menu_item_share:
+                Utils.shareApp(weakReferenceActivity, shareStr);
                 break;
             default:
                 break;
@@ -361,13 +354,13 @@ public class MainActivity extends Activity {
     }
 
     public void OpenHelp() {
-        Utils.alertDialogShow(WeakReferenceActivity, getApplicationContext(),
+        Utils.alertDialogShow(weakReferenceActivity, getApplicationContext(),
                 "עזרה", android.R.drawable.ic_menu_help, "files/help.txt",
                 "הבנתי", "זכי את הרבים", shareStr);
     }
 
     public void OpenAbout() {
-        Utils.alertDialogShow(WeakReferenceActivity, getApplicationContext(),
+        Utils.alertDialogShow(weakReferenceActivity, getApplicationContext(),
                 "אודות", android.R.drawable.ic_menu_info_details,
                 "files/about.txt", "אשריכן תזכו למצוות", "זכי את הרבים",
                 shareStr);
