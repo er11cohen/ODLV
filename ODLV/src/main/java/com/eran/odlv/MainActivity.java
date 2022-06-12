@@ -1,7 +1,6 @@
 package com.eran.odlv;
 
 import android.R.drawable;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -28,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,25 +55,21 @@ public class MainActivity extends Activity {
     SearchView searchView;
     SharedPreferences odlvPreferences;
 
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         odlvPreferences = getSharedPreferences("odlvPreferences", MODE_PRIVATE);
 
-        // /////////////////////////////////////////////////////
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
-            // get the parent view of home (app icon) imageview
-            ViewGroup home = (ViewGroup) findViewById(android.R.id.home).getParent();
-            // get the first child (up imageview)
-            // change the icon according to your needs
-            ((ImageView) home.getChildAt(0)).setImageResource(R.drawable.ic_drawer);
+        // get the parent view of home (app icon) imageview
+        ViewGroup home = (ViewGroup) findViewById(android.R.id.home).getParent();
+        // get the first child (up imageview)
+        // change the icon according to your needs
+        ((ImageView) home.getChildAt(0)).setImageResource(R.drawable.ic_drawer);
 
-            mActivityTitle = getTitle().toString();
-        }
+        mActivityTitle = getTitle().toString();
 
         menu = getResources().getStringArray(R.array.menu_array);
         dLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -176,99 +170,84 @@ public class MainActivity extends Activity {
                 R.string.drawer_open, R.string.drawer_close) {
 
             /** Called when a drawer has settled in a completely open state. */
-            @SuppressLint("NewApi")
             public void onDrawerOpened(View drawerView) {
                 DrawerLayoutOpen = true;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-                    getActionBar().setTitle("בחרי פעולה");
-                }
+                getActionBar().setTitle("בחרי פעולה");
             }
 
             /** Called when a drawer has settled in a completely closed state. */
-            @SuppressLint("NewApi")
             public void onDrawerClosed(View view) {
                 DrawerLayoutOpen = false;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-                    getActionBar().setTitle(mActivityTitle);
-                }
+                getActionBar().setTitle(mActivityTitle);
             }
         };
     }
 
-    @SuppressLint("NewApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-            getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
 
-            searchView = (SearchView) menu.findItem(R.id.menu_item_search).getActionView();
-            searchView.setQueryHint("חיפוש במפתח");
+        searchView = (SearchView) menu.findItem(R.id.menu_item_search).getActionView();
+        searchView.setQueryHint("חיפוש במפתח");
 
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-            searchView.setOnQueryTextListener(new OnQueryTextListener() {
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
-                @Override
-                public boolean onQueryTextChange(String query) {
+            @Override
+            public boolean onQueryTextChange(String query) {
 
-                    // Toast.makeText(getApplicationContext(),"onQueryTextChange " +query ,Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(),"onQueryTextChange " +query ,Toast.LENGTH_LONG).show();
 
-                    int textlength = query.length();
-                    alHalachFilter.clear();
-                    for (int i = 0; i < alHalach.size(); i++) {
-                        if (textlength <= alHalach.get(i).getHalachHe().length()) {
-                            if (alHalach.get(i).getHalachHe().contains(query)) {
-                                alHalachFilter.add(alHalach.get(i));
-                            }
+                int textlength = query.length();
+                alHalachFilter.clear();
+                for (int i = 0; i < alHalach.size(); i++) {
+                    if (textlength <= alHalach.get(i).getHalachHe().length()) {
+                        if (alHalach.get(i).getHalachHe().contains(query)) {
+                            alHalachFilter.add(alHalach.get(i));
                         }
                     }
-                    lv.setAdapter(new ArrayAdapter<Halach>(MainActivity.this, android.R.layout.simple_list_item_1, alHalachFilter));
-
-                    return true;
-
                 }
+                lv.setAdapter(new ArrayAdapter<Halach>(MainActivity.this, android.R.layout.simple_list_item_1, alHalachFilter));
 
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    // TODO Auto-generated method stub
-                    return false;
-                }
+                return true;
 
-            });
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+        });
 
         return true;
     }
 
     //for voice search
-    @SuppressLint("NewApi")
     @Override
     protected void onNewIntent(Intent intent) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-                String query = intent.getStringExtra(SearchManager.QUERY);
-                searchView.setQuery(query, false);
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            searchView.setQuery(query, false);
 
-                //close the keyboard
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-                }
+            //close the keyboard
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
             }
         }
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onBackPressed() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            if (!searchView.isIconified()) {
-                searchView.setIconified(true);// clear the searchView
-                searchView.onActionViewCollapsed();//close the searchView
-            } else {
-                super.onBackPressed();
-            }
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);// clear the searchView
+            searchView.onActionViewCollapsed();//close the searchView
         } else {
             super.onBackPressed();
         }

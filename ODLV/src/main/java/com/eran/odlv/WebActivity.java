@@ -21,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
@@ -80,7 +79,6 @@ public class WebActivity extends Activity {
     }
 
 
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,20 +87,13 @@ public class WebActivity extends Activity {
 
         fullScreen = defaultSharedPreferences.getBoolean("CBFullScreen", false);
 
-        if (fullScreen && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-            this.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-
         setContentView(R.layout.activity_web);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            actionBar = getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            if (fullScreen) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                actionBar.hide();
-            }
+        actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (fullScreen) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            actionBar.hide();
         }
 
         boolean keepScreenOn = defaultSharedPreferences.getBoolean("CBKeepScreenOn", false);
@@ -162,12 +153,8 @@ public class WebActivity extends Activity {
         wvSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
         wvSetting.setJavaScriptEnabled(true);
         LoadWebView(Search.WITHOUT_SEARCH);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            WeakReference<Activity> WeakReferenceActivity = new WeakReference<Activity>(this);
-            Utils.toggleFullScreen(WeakReferenceActivity, getApplicationContext(), R.id.webViewOdlv, actionBar, fullScreen);
-        }
-
         WeakReference<Activity> WeakReferenceActivity = new WeakReference<Activity>(this);
+        Utils.toggleFullScreen(WeakReferenceActivity, getApplicationContext(), R.id.webViewOdlv, actionBar, fullScreen);
         Utils.firstDoubleClickInfo(defaultSharedPreferences, WeakReferenceActivity);
     }
 
@@ -247,7 +234,6 @@ public class WebActivity extends Activity {
     }
 
 
-    @SuppressLint("NewApi")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
