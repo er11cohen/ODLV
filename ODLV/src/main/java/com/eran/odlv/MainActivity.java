@@ -378,7 +378,7 @@ public class MainActivity extends Activity {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.eran.odlv"));
         startActivity(browserIntent);
 
-        String text = "צדיקה אהבת את האפלקציה? דרגי אותנו  5 כוכבים וטלי חלק בזיכוי הרבים.";
+        String text = "צדיקה דרגי אותנו  5 כוכבים וטלי חלק בזיכוי הרבים.";
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 }
