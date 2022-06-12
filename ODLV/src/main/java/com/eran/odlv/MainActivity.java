@@ -114,8 +114,8 @@ public class MainActivity extends Activity {
 
         setupDrawer();
         mDrawerToggle.setDrawerIndicatorEnabled(true);
-        dLayout.setDrawerListener(mDrawerToggle);
-        //mDrawerToggle.syncState();//remove the icon on title
+        dLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState(); //set the back icon on title
 
         lv = (ListView) findViewById(R.id.ListViewHlach);
         alHalachFilter = new ArrayList<Halach>();
