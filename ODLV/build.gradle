@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion "32.0.0"
+    namespace = "com.eran.odlv"
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.eran.odlv"
-        minSdkVersion 14
-        targetSdkVersion 32
+        minSdk 14
+        targetSdk 34
+        versionCode = 10004
+        versionName = "1.0.4"
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7
