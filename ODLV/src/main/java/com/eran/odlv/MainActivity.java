@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
 
 
         String version = odlvPreferences.getString("version", "-1");
-        if (!version.equals("1.0.4")) {
+        if (!version.equals("1.0.5")) {
             String message = Utils.ReadTxtFile("files/newVersion.txt", getApplicationContext());
             ((TextView) new AlertDialog.Builder(this)
                     .setTitle("חדשות ללומדות ילקוט יוסף הלכות לאשה ולבת")
@@ -159,7 +159,7 @@ public class MainActivity extends Activity {
                     .setMovementMethod(LinkMovementMethod.getInstance());
 
             SharedPreferences.Editor editor = odlvPreferences.edit();
-            editor.putString("version", "1.0.4");
+            editor.putString("version", "1.0.5");
             editor.commit();
         }
     }
