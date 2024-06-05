@@ -1,13 +1,18 @@
 apply plugin: 'com.android.application'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file("gradle.properties").newDataInputStream())
+def $sdk = properties.getProperty("sdk") as Integer
+
+
 android {
     namespace = "com.eran.odlv"
-    compileSdk 34
+    compileSdk $sdk
 
     defaultConfig {
         applicationId "com.eran.odlv"
         minSdk 14
-        targetSdk 34
+        targetSdk $sdk
         versionCode = 10005
         versionName = "1.0.5"
         compileOptions {
